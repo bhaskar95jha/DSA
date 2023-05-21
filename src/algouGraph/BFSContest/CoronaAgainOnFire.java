@@ -45,11 +45,11 @@ public class CoronaAgainOnFire {
 			}
 			
 		}
-		if(virusList.size()==0) {
-			System.out.println("YES");
-			return;
-			
-		}
+//		if(virusList.size()==0) {
+//			System.out.println("YES");
+//			return;
+//			
+//		}
 		int vis[][] = new int[n][m];
 		int distFromVirus[][] = new int[n][m]; 
 		distFromVirus = bfsDistVirus(n,m,grid,virusList,vis);
