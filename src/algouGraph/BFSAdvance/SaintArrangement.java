@@ -15,34 +15,37 @@ public class SaintArrangement {
 		
 		st = new StringTokenizer(br.readLine());
 		int temple[] = new int[n];
-		Deque<Integer> q = new ArrayDeque<>();
-		Set<Integer> vis = new HashSet<>();
+		Deque<Long> q = new ArrayDeque<>();
+		Set<Long> vis = new HashSet<>();
 		
 		for(int i=0;i<n;i++) {
 			temple[i] = Integer.parseInt(st.nextToken());
-			q.add(temple[i]);
-			vis.add(temple[i]);
+			q.add((long) temple[i]);
+			vis.add((long) temple[i]);
 		}
 		
 		
-		Set<Integer> ansList = new HashSet<>();
+		Set<Long> ansList = new HashSet<>();
 		
 		bfs(q,vis,ansList,m);
-		for(int ele:ansList) {
+		for(long ele:ansList) {
 			System.out.print(ele+" ");
 		}
 	}
 
-	private static void bfs(Deque<Integer> q, Set<Integer> vis, Set<Integer> ansList,int saint) {
+	private static void bfs(Deque<Long> q, Set<Long> vis, Set<Long> ansList,int saint) {
 		// TODO Auto-generated method stub
-		int dist = 1;
-		int ans = 0;
+		long dist = 1;
+		long ans = 0;
 		while(!q.isEmpty() && saint>0) {
-			int size =  q.size();	
-			while(size!=0 && saint>0) {
-				int curr = q.poll();
-				int prev = curr-1;
-				int next = curr+1;
+			long size =  q.size();	
+			while(size>0 && saint>0) {
+				long curr = q.poll();
+				if(curr>Integer.MAX_VALUE-1 && curr<Integer.MIN_VALUE+1) {
+					continue;
+				}
+				long prev = curr-1;
+				long next = curr+1;
 				if(!vis.contains(prev)) {
 					q.add(prev);
 					vis.add(prev);
