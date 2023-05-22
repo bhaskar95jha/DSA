@@ -33,8 +33,7 @@ public class PathInDirectedGraph {
 	}
 
 	private static int solve(int A, ArrayList<ArrayList<Integer>> B) {
-		// TODO Auto-generated method stub
-		
+		//process the input that come from the machine
 		ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
         for(int i = 0; i<=A; i++){
             adjList.add(new ArrayList<Integer>());
@@ -46,6 +45,7 @@ public class PathInDirectedGraph {
         }
         int dest = A;
         
+        //bfs start here 
 		Set<Integer> vis = new HashSet<>();
 		Deque<Integer> q = new ArrayDeque<>();
 		
@@ -61,7 +61,6 @@ public class PathInDirectedGraph {
 				}
 			}
 		}
-		
 		return vis.contains(dest)?1:0;
 	}
 
