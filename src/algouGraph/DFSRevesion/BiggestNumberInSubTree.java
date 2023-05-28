@@ -45,7 +45,7 @@ public class BiggestNumberInSubTree {
 				max = Math.max(sizeOfSubtree(adjList, child, vis, biggestNumber), max);
 			}
 		}
-		System.out.println(curr+" "+max);
+		
 		biggestNumber.put(curr,max);
 		
 		return max;
