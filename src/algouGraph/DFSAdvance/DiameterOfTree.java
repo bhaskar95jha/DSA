@@ -34,6 +34,7 @@ public class DiameterOfTree {
 		int vis[] = new int[n+1];
 		List<Integer> ansList = new ArrayList<>();
  		int ans = dfs(adjList,1,vis,ansList);
+ 		System.out.println(ansList);
  		int max = 0;
  		for(int ele:ansList)
  			max = Math.max(ele, max);
