@@ -55,7 +55,7 @@ public class KthConsecutive {
 		}
 		
 		
-		//check for degree
+		//check for leaf node
 		if(adjList.get(curr).size()==1 && curr != -1) {
 			return 1;
 		}
