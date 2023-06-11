@@ -50,7 +50,7 @@ public class GoogleVsAppleMaps {
 			int v = Integer.parseInt(st.nextToken());
 			int g = Integer.parseInt(st.nextToken());
 			int a = Integer.parseInt(st.nextToken());
-			//googleList.get(u).add(v);	
+			//googleList.get(u).add(v)  ;	
 		}
 		int src = 1;
 		int dist[] = new int[n+1];

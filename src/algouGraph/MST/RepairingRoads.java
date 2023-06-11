@@ -3,39 +3,8 @@ package algouGraph.MST;
 import java.io.*;
 import java.util.*;
 
-class Pair{
-	int first;
-	int second;
 
-	public Pair() {
-		
-	}
-	
-	public Pair(int first, int second) {
-		this.first = first;
-		this.second = second;
-	}
-	
-}
-
-class WeightNodeParent implements Comparable<WeightNodeParent>{
-	int weight;
-	int node;
-	int parent;
-	
-	public WeightNodeParent(int weight, int node, int parent) {
-		this.weight = weight;
-		this.node = node;
-		this.parent = parent;
-	}
-
-	@Override
-	public int compareTo(WeightNodeParent wnp) {
-		return Integer.compare(this.weight, wnp.weight);
-	}
-}
-
-public class PrimsAlgorithm {
+public class RepairingRoads {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -50,7 +19,7 @@ public class PrimsAlgorithm {
 		
 		List<List<Pair>> adjList = new ArrayList<>();
 		
-		for(int i=0;i<n;i++) {
+		for(int i=0;i<n+1;i++) {
 			adjList.add(new ArrayList<>());
 		}
 		
@@ -71,16 +40,16 @@ public class PrimsAlgorithm {
 	private static void prims(List<List<Pair>> adjList, int n) {
 		// TODO Auto-generated method stub
 		PriorityQueue<WeightNodeParent> pq = new PriorityQueue<>();
-		int vis[] = new int[n];
+		int vis[] = new int[n+1];
 		List<Pair> mst = new ArrayList<>();
-		pq.add(new WeightNodeParent(0, 0, -1));
-		int sum = 0;
+		pq.add(new WeightNodeParent(0, 1, 0));
+		long sum = 0;
 		
 		while(!pq.isEmpty()) {
 			WeightNodeParent wnp = pq.poll();
 			if(vis[wnp.node]==0) {
 				vis[wnp.node] = 1;
-				if(wnp.parent != -1) {
+				if(wnp.parent != 0) {
 					mst.add(new Pair(wnp.parent,wnp.node));
 				}
 				sum += wnp.weight;
@@ -93,11 +62,13 @@ public class PrimsAlgorithm {
 				
 			}
 		}
-		
-		System.out.println(sum);
-		for(Pair edge:mst) {
-			System.out.println(edge.first+" -> "+edge.second);
+		if(mst.size()==n-1) {
+			System.out.println(sum);
 		}
+		else {
+			System.out.println("IMPOSSIBLE");
+		}
+		
 	}
 
 }
