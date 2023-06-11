@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.*;
 
 class PathWeight{
-	int src;
-	int dest;
+	long src;
+	long dest;
 	long weight;
-	public PathWeight(int src, int dest, long weight) {		
+	public PathWeight(long src, long dest, long weight) {		
 		this.src = src;
 		this.dest = dest;
 		this.weight = weight;
@@ -46,8 +46,8 @@ public class FlightCoupon {
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		int n = Integer.parseInt(st.nextToken());
-		int m = Integer.parseInt(st.nextToken());
+		long n = Long.parseLong(st.nextToken());
+		long m = Long.parseLong(st.nextToken());
 		
 		List<List<Pair>> adjList = new ArrayList<>();
 		List<List<Pair>> revAdjList = new ArrayList<>();
@@ -60,30 +60,30 @@ public class FlightCoupon {
 		
 		while(m-- > 0) {
 			st = new StringTokenizer(br.readLine());
-			int u = Integer.parseInt(st.nextToken());
-			int v = Integer.parseInt(st.nextToken());
+			long u = Long.parseLong(st.nextToken());
+			long v = Long.parseLong(st.nextToken());
 			long w = Long.parseLong(st.nextToken());
 			pathweight.add(new PathWeight(u, v, w));
 			
 			Pair destWeight = new Pair(v,w);
-			adjList.get(u).add(destWeight);
+			adjList.get((int)u).add(destWeight);
 			Pair srcWeight = new Pair(u,w);
-			revAdjList.get(v).add(srcWeight);
+			revAdjList.get((int)v).add(srcWeight);
 		}
 		
 		int src = 1;
 		
-		long distFrmSrc[] = new long[n+1];
+		long distFrmSrc[] = new long[(int) (n+1)];
 		distFrmSrc = dijKstra(adjList,n,src);
-		long distFrmdest[] = new long[n+1];
+		long distFrmdest[] = new long[(int) (n+1)];
 		distFrmdest = dijKstra(revAdjList,n,n);
 		
 		long min = Long.MAX_VALUE;
 		for(PathWeight pw:pathweight) {
-			int psrc = pw.src;
-			int pdest = pw.dest;
+			long psrc = pw.src;
+			long pdest = pw.dest;
 			long pweight = pw.weight;
-			long ans = distFrmSrc[psrc]+(pweight/2)+distFrmdest[pdest];
+			long ans = distFrmSrc[(int) psrc]+(pweight/2)+distFrmdest[(int) pdest];
 			min = Math.min(ans,min);
 		}
 		bw.write(min+"");
@@ -91,15 +91,15 @@ public class FlightCoupon {
 		
 	}
 
-	private static long[] dijKstra(List<List<Pair>> adjList, int n, int src) {
+	private static long[] dijKstra(List<List<Pair>> adjList, long n, long src) {
 		
-		long dist[] = new long[n+1];
+		long dist[] = new long[(int) (n+1)];
 		Arrays.fill(dist, Long.MAX_VALUE);
 		
-		dist[src] = 0;
+		dist[(int) src] = 0;
 		
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
-		pq.add(new Pair(dist[src],(long)src));
+		pq.add(new Pair(dist[(int) src],(long)src));
 		
 		while(!pq.isEmpty()) {
 			Pair curr = pq.poll();
