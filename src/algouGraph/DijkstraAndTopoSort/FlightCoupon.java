@@ -6,9 +6,8 @@ import java.util.*;
 class PathWeight{
 	int src;
 	int dest;
-	int weight;
-	public PathWeight(int src, int dest, int weight) {
-		
+	long weight;
+	public PathWeight(int src, int dest, long weight) {		
 		this.src = src;
 		this.dest = dest;
 		this.weight = weight;
@@ -16,6 +15,26 @@ class PathWeight{
 	
 }
 
+class Pair implements Comparable<Pair>{
+	long first;
+	long second;
+
+	public Pair() {
+		
+	}
+	
+	public Pair(long first, long second) {
+		this.first = first;
+		this.second = second;
+	}
+
+	@Override
+	public int compareTo(Pair p) {
+		// TODO Auto-generated method stub
+		return Long.compare(this.first, p.first);
+	}
+	
+}
 
 public class FlightCoupon {
 
@@ -23,6 +42,7 @@ public class FlightCoupon {
 		// TODO Auto-generated method stub
 		InputStreamReader ip = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(ip);
+		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
@@ -30,97 +50,74 @@ public class FlightCoupon {
 		int m = Integer.parseInt(st.nextToken());
 		
 		List<List<Pair>> adjList = new ArrayList<>();
+		List<List<Pair>> revAdjList = new ArrayList<>();
 		List<PathWeight> pathweight = new ArrayList<>();
 		
 		for(int i=0;i<n+1;i++) {
 			adjList.add(new ArrayList<>());
+			revAdjList.add(new ArrayList<>());
 		}
 		
 		while(m-- > 0) {
 			st = new StringTokenizer(br.readLine());
 			int u = Integer.parseInt(st.nextToken());
 			int v = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
-			Pair destWeight = new Pair(v,w);
+			long w = Long.parseLong(st.nextToken());
 			pathweight.add(new PathWeight(u, v, w));
-			adjList.get(u).add(destWeight);	
+			
+			Pair destWeight = new Pair(v,w);
+			adjList.get(u).add(destWeight);
+			Pair srcWeight = new Pair(u,w);
+			revAdjList.get(v).add(srcWeight);
 		}
+		
 		int src = 1;
-		int distFrmSrc[] = new int[n+1];
-		int parent[] = new int[n+1];
-		Arrays.fill(parent, -1);
-		//min cost from src to dest
-		distFrmSrc = dijKstra(adjList,n,src,parent);
 		
-		//making path from src to dest
-		int temp = n;
-		List<Integer> path = new ArrayList<>();
-		while(temp != -1) {
-			path.add(temp);
-			temp = parent[temp];
-		}
-		Collections.reverse(path);
+		long distFrmSrc[] = new long[n+1];
+		distFrmSrc = dijKstra(adjList,n,src);
+		long distFrmdest[] = new long[n+1];
+		distFrmdest = dijKstra(revAdjList,n,n);
 		
-		//creating list of fare which path gave us minimum cost
-		List<Integer> weightList = new ArrayList<>();
-		for(int i=0;i<path.size()-1;i++) {
-			src = path.get(i);
-			int dest = path.get(i+1);
-			for(PathWeight pw:pathweight) {
-				if(src == pw.src && dest == pw.dest) {
-					weightList.add(pw.weight);
-				}
-			}
+		long min = Long.MAX_VALUE;
+		for(PathWeight pw:pathweight) {
+			int psrc = pw.src;
+			int pdest = pw.dest;
+			long pweight = pw.weight;
+			long ans = distFrmSrc[psrc]+(pweight/2)+distFrmdest[pdest];
+			min = Math.min(ans,min);
 		}
-		
-		//finding the maximum fair
-		int max = Integer.MIN_VALUE;
-		for(int ele:weightList) {
-			max = Math.max(ele, max);
-		}
-		
-		//half the and calculate total fare
-		long ans = 0;
-		int flag = 0;
-		for(int ele:weightList) {
-			if(flag == 0 && ele == max) {
-				ans += (ele/2);
-				flag = 1;
-			}
-			else
-				ans += ele;
-		}
-		System.out.println(ans);
+		bw.write(min+"");
+		bw.flush();
 		
 	}
 
-	private static int[] dijKstra(List<List<Pair>> adjList, int n, int src,int []parent) {
-		int dist[] = new int[n+1];
-		Arrays.fill(dist, Integer.MAX_VALUE);
+	private static long[] dijKstra(List<List<Pair>> adjList, int n, int src) {
+		
+		long dist[] = new long[n+1];
+		Arrays.fill(dist, Long.MAX_VALUE);
 		
 		dist[src] = 0;
 		
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
-		pq.add(new Pair(dist[src],src));
+		pq.add(new Pair(dist[src],(long)src));
 		
 		while(!pq.isEmpty()) {
 			Pair curr = pq.poll();
-			int distFromsrc = curr.first;
-			int currNode = curr.second;
-			if(distFromsrc != dist[currNode])
+			long distFromsrc = curr.first;
+			long currNode = curr.second;
+			if(distFromsrc != dist[(int)currNode])
 				continue;
-			for(Pair child:adjList.get(currNode)) {
-				int childNode = child.first;
-				int childWeight = child.second;
-				if(dist[childNode]>childWeight+dist[currNode]) {
-					dist[childNode] = childWeight+dist[currNode];
-					parent[childNode] = currNode;
-					pq.add(new Pair(dist[childNode],childNode));
+			for(Pair child:adjList.get((int)currNode)) {
+				
+				long childNode = child.first;
+				long childWeight = child.second;
+				if(dist[(int) childNode]>childWeight+dist[(int) currNode]) {
+					dist[(int) childNode] = childWeight+dist[(int) currNode];
+					pq.add(new Pair(dist[(int) childNode],childNode));
 				}
 			}
-		}
-		
+		}	
 		return dist;
 	}
-
+	
 }
