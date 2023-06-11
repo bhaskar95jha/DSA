@@ -1,4 +1,4 @@
-package algouGraph.DijkstraAndTopoSort;
+package algouGraph.DijkstraAndTopoSortContest;
 
 import java.io.*;
 import java.util.*;

@@ -1,4 +1,4 @@
-package algouGraph.DijkstraAndTopoSort;
+package algouGraph.DijkstraAndTopoSortContest;
 
 import java.util.ArrayList;
 import java.util.HashSet;

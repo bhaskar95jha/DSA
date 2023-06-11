@@ -3,6 +3,27 @@ package algouGraph.DijkstraAndTopoSort;
 import java.io.*;
 import java.util.*;
 
+class Pairs implements Comparable<Pairs>{
+	int first;
+	int second;
+
+	public Pairs() {
+		
+	}
+	
+	public Pairs(int first, int second) {
+		this.first = first;
+		this.second = second;
+	}
+
+	@Override
+	public int compareTo(Pairs p) {
+		// TODO Auto-generated method stub
+		return Integer.compare(this.first, p.first);
+	}
+	
+}
+
 public class GoogleVsAppleMaps {
 
 	public static void main(String[] args) throws IOException {
