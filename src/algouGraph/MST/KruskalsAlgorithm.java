@@ -57,6 +57,7 @@ public class KruskalsAlgorithm {
 			if(dsu.findUPar(edge.src)!=dsu.findUPar(edge.dest)) {
 				mst += edge.weight;
 				dsu.unionByRank(edge.src, edge.dest);
+				System.out.println(edge.src+" "+edge.dest);
 			}
 		}
 		System.out.println(mst);
