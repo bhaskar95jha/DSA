@@ -1,19 +1,8 @@
-package algouGraph.DijkstraAndTopoSort;
+package hackerearth.graph;
 
 import java.io.*;
 import java.util.*;
 
-class PathWeight{
-	long src;
-	long dest;
-	long weight;
-	public PathWeight(long src, long dest, long weight) {		
-		this.src = src;
-		this.dest = dest;
-		this.weight = weight;
-	}
-	
-}
 
 class Pair implements Comparable<Pair>{
 	long first;
@@ -35,8 +24,7 @@ class Pair implements Comparable<Pair>{
 	}
 	
 }
-
-public class FlightCoupon {
+public class ShortestPathAgain {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -50,12 +38,9 @@ public class FlightCoupon {
 		long m = Long.parseLong(st.nextToken());
 		
 		List<List<Pair>> adjList = new ArrayList<>();
-		List<List<Pair>> revAdjList = new ArrayList<>();
-		List<PathWeight> pathweight = new ArrayList<>();
 		
 		for(int i=0;i<n+1;i++) {
 			adjList.add(new ArrayList<>());
-			revAdjList.add(new ArrayList<>());
 		}
 		
 		while(m-- > 0) {
@@ -63,39 +48,29 @@ public class FlightCoupon {
 			long u = Long.parseLong(st.nextToken());
 			long v = Long.parseLong(st.nextToken());
 			long w = Long.parseLong(st.nextToken());
-			pathweight.add(new PathWeight(u, v, w));
 			
 			Pair destWeight = new Pair(v,w);
 			adjList.get((int)u).add(destWeight);
 			Pair srcWeight = new Pair(u,w);
-			revAdjList.get((int)v).add(srcWeight);
+			adjList.get((int)v).add(srcWeight);
+			
 		}
 		
 		int src = 1;
 		
 		long distFrmSrc[] = new long[(int) (n+1)];
 		distFrmSrc = dijKstra(adjList,n,src);
-		long distFrmdest[] = new long[(int) (n+1)];
-		distFrmdest = dijKstra(revAdjList,n,n);
 		
-		long min = Long.MAX_VALUE;
-		for(PathWeight pw:pathweight) {
-			long psrc = pw.src;
-			long pdest = pw.dest;
-			long pweight = pw.weight;
-			long ans = distFrmSrc[(int) psrc]+(pweight/2)+distFrmdest[(int) pdest];
-			min = Math.min(ans,min);
+		for(long ele:distFrmSrc) {
+			System.out.println(ele);
 		}
-		bw.write(min+"");
-		bw.flush();
-		
 	}
-
+	
 	private static long[] dijKstra(List<List<Pair>> adjList, long n, long src) {
 		
 		long dist[] = new long[(int) (n+1)];
 		Arrays.fill(dist, Long.MAX_VALUE);
-		long parent[] = new long[(int) n+1];
+		
 		dist[(int) src] = 0;
 		
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
@@ -108,7 +83,6 @@ public class FlightCoupon {
 			if(distFromsrc != dist[(int)currNode])
 				continue;
 			for(Pair child:adjList.get((int)currNode)) {
-				
 				long childNode = child.first;
 				long childWeight = child.second;
 				if(dist[(int) childNode]>childWeight+dist[(int) currNode]) {
@@ -119,5 +93,5 @@ public class FlightCoupon {
 		}	
 		return dist;
 	}
-	
+
 }
