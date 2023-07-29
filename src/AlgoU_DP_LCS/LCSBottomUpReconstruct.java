@@ -3,7 +3,7 @@ package AlgoU_DP_LCS;
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class LCSBottomUp { 
+public class LCSBottomUpReconstruct { 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		InputStreamReader ip = new InputStreamReader(System.in);
@@ -31,14 +31,24 @@ public class LCSBottomUp {
 			}
 		}
 		
-		for(int i=0;i<s.length()+1;i++) {
-			for(int j=0;j<t.length()+1;j++) {
-				System.out.print(dp[i][j]+" ");
+		int i = s.length();
+		int j = t.length();
+		
+		while(i>0 && j>0) {
+			if(s.charAt(i-1)==t.charAt(j-1)) {
+				sb.append(s.charAt(i-1));
+				i--;
+				j--;
+			}else {
+				if(dp[i][j-1]>dp[i-1][j]) {
+					j--;
+				}else {
+					i--;
+				}
 			}
-			System.out.println();
 		}
 		
-		System.out.println(dp[s.length()][t.length()]);
+		System.out.println(sb.reverse());
 		
 	}
 }
